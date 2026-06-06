@@ -216,3 +216,14 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+week2/
+
+# Twin Project Ignores
+twin/backend/.env
+twin/memory/*.json
+twin/frontend/node_modules/
+twin/frontend/.next/
+twin/frontend/out/
+twin/frontend/.env.local
+twin/frontend/.env.*.local
