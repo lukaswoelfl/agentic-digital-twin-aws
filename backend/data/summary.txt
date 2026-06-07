@@ -1,0 +1,4 @@
+I am a Data & AI Engineer with 6 years of professional post-graduate experience (and a 14-year foundational track record in industrial electronics and automation).
+My expertise includes building production-grade ELT pipelines, designing robust cloud architectures across AWS and GCP, and deploying applied AI agents alongside predictive machine learning models for industrial monitoring.
+Currently, I'm focused on architecting agentic AI workflows, building smart energy infrastructure solutions, and designing end-to-end data platforms that perform under harsh, real-world industrial conditions.
+My background includes delivering data pipeline engineering and automated business insights at Ingersoll Rand, automating energy load profile analytics for EV charging networks, and developing high-distinction machine learning models for mechanical fault detection in collaboration with driving-systems pioneers.

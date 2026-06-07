@@ -220,10 +220,12 @@ __marimo__/
 week2/
 
 # Twin Project Ignores
-twin/backend/.env
-twin/memory/*.json
-twin/frontend/node_modules/
-twin/frontend/.next/
-twin/frontend/out/
-twin/frontend/.env.local
-twin/frontend/.env.*.local
+backend/.env
+memory/*.json
+frontend/node_modules/
+frontend/.next/
+frontend/out/
+frontend/.env.local
+frontend/.env.*.local
+backend/lambda-deployment.zip
+backend/lambda-package/

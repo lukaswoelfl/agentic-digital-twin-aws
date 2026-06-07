@@ -1,0 +1,36 @@
+{
+  "full_name": "Lukas Wölfl",
+  "name": "Lukas",
+  "current_role": "Data & AI Engineer",
+  "location": "Freiburg im Breisgau, Germany",
+  "email": "rope-room2r@icloud.com",
+  "linkedin": "https://www.linkedin.com/in/lukas-woelfl/",
+  "specialties": [
+    "Industrial IoT (IIoT) & Smart Energy Infrastructure",
+    "Data Pipeline Engineering & Cloud Architecture (AWS/GCP)",
+    "Applied AI, Machine Learning & Agentic Workflows"
+  ],
+  "years_experience": 14,
+  "education": [
+    {
+      "degree": "Master of Science (M.Sc.) in Industrial Engineering and Management (Electrical Engineering)",
+      "institution": "Paderborn University",
+      "year": "2020"
+    },
+    {
+      "degree": "International Exchange Program (Advanced Power Systems / Microgrids)",
+      "institution": "University of the Witwatersrand",
+      "year": "2018"
+    },
+    {
+      "degree": "Bachelor of Science (B.Sc.) in Industrial Engineering and Management (Electrical Engineering)",
+      "institution": "Paderborn University",
+      "year": "2017"
+    },
+    {
+      "degree": "Certified Electronics Technician for Industrial Engineering",
+      "institution": "TRILUX",
+      "year": "2011"
+    }
+  ]
+}
