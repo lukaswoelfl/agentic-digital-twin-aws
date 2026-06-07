@@ -127,7 +127,7 @@ agentic-digital-twin-aws/
    This generates the static files inside the `out/` directory.
 2. Sync the static website files to your AWS S3 bucket:
    ```bash
-   aws s3 sync out/ s3://twin-frontend-bucket-563558201217/ --delete --region eu-central-1
+   aws s3 sync out/ s3://<your-frontend-bucket-name>/ --delete --region <region>
    ```
 
 3. Test your hosted application via the **S3 Bucket website endpoint** (or CloudFront URL once set up).
