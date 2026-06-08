@@ -40,7 +40,7 @@ export default function Twin() {
         setIsLoading(true);
 
         try {
-            const response = await fetch('https://yzh9nfifx6.execute-api.eu-central-1.amazonaws.com/chat', {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'}/chat`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -150,9 +150,8 @@ export default function Twin() {
                 {messages.map((message) => (
                     <div
                         key={message.id}
-                        className={`flex gap-4 animate-fade-in ${
-                            message.role === 'user' ? 'justify-end' : 'justify-start'
-                        }`}
+                        className={`flex gap-4 animate-fade-in ${message.role === 'user' ? 'justify-end' : 'justify-start'
+                            }`}
                     >
                         {message.role === 'assistant' && (
                             <div className="flex-shrink-0 self-end">
@@ -163,17 +162,15 @@ export default function Twin() {
                         )}
 
                         <div
-                            className={`max-w-[75%] rounded-2xl px-4 py-3 text-sm leading-relaxed shadow-md ${
-                                message.role === 'user'
-                                    ? 'bg-gradient-to-br from-indigo-600 to-indigo-700 text-white rounded-br-none'
-                                    : 'bg-slate-900/95 border border-slate-800/85 text-slate-200 rounded-bl-none'
-                            }`}
+                            className={`max-w-[75%] rounded-2xl px-4 py-3 text-sm leading-relaxed shadow-md ${message.role === 'user'
+                                ? 'bg-gradient-to-br from-indigo-600 to-indigo-700 text-white rounded-br-none'
+                                : 'bg-slate-900/95 border border-slate-800/85 text-slate-200 rounded-bl-none'
+                                }`}
                         >
                             <p className="whitespace-pre-wrap">{message.content}</p>
                             <p
-                                className={`text-[10px] mt-1.5 flex justify-end font-medium tracking-wide ${
-                                    message.role === 'user' ? 'text-indigo-200' : 'text-slate-500'
-                                }`}
+                                className={`text-[10px] mt-1.5 flex justify-end font-medium tracking-wide ${message.role === 'user' ? 'text-indigo-200' : 'text-slate-500'
+                                    }`}
                             >
                                 {message.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                             </p>

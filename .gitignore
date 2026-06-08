@@ -229,3 +229,13 @@ frontend/.env.local
 frontend/.env.*.local
 backend/lambda-deployment.zip
 backend/lambda-package/
+
+# Terraform
+*.tfstate
+*.tfstate.*
+.terraform/
+.terraform.lock.hcl
+terraform.tfstate.d/
+*.tfvars
+!terraform.tfvars
+!prod.tfvars
