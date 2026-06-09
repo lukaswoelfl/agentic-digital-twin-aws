@@ -29,11 +29,11 @@ app.add_middleware(
 # Initialize Bedrock client - see Q42 on https://edwarddonner.com/faq if the Region gives you problems
 bedrock_client = boto3.client(
     service_name="bedrock-runtime", 
-    region_name=os.getenv("DEFAULT_AWS_REGION", "us-east-1")
+    region_name=os.getenv("DEFAULT_AWS_REGION", os.getenv("AWS_REGION", "eu-central-1"))
 )
 
 # Bedrock model selection - see Q42 on https://edwarddonner.com/faq for more
-BEDROCK_MODEL_ID = os.getenv("BEDROCK_MODEL_ID", "amazon.nova-micro-v1:0")
+BEDROCK_MODEL_ID = os.getenv("BEDROCK_MODEL_ID", "eu.amazon.nova-micro-v1:0")
 
 # Memory storage configuration
 USE_S3 = os.getenv("USE_S3", "false").lower() == "true"
@@ -109,13 +109,6 @@ def call_bedrock(conversation: List[Dict], user_message: str) -> str:
     # Build messages in Bedrock format
     messages = []
     
-    # Add system prompt as first user message
-    # Or there's a better way to do this - pass in system=[{"text": prompt()}] to the converse call below
-    messages.append({
-        "role": "user", 
-        "content": [{"text": f"System: {prompt()}"}]
-    })
-    
     # Add conversation history (limit to last 25 exchanges)
     for msg in conversation[-50:]:
         messages.append({
@@ -130,9 +123,13 @@ def call_bedrock(conversation: List[Dict], user_message: str) -> str:
     })
     
     try:
-        # Call Bedrock using the converse API
+        # Call Bedrock using the converse API with system prompt caching
         response = bedrock_client.converse(
             modelId=BEDROCK_MODEL_ID,
+            system=[
+                {"text": prompt()},
+                {"cachePoint": {"type": "default"}}
+            ],
             messages=messages,
             inferenceConfig={
                 "maxTokens": 2000,
