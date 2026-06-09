@@ -16,6 +16,7 @@ export default function Twin() {
     const [isLoading, setIsLoading] = useState(false);
     const [sessionId, setSessionId] = useState<string>('');
     const messagesEndRef = useRef<HTMLDivElement>(null);
+    const inputRef = useRef<HTMLInputElement>(null);
 
     const scrollToBottom = () => {
         messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -46,7 +47,7 @@ export default function Twin() {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                    message: input,
+                    message: userMessage.content,
                     session_id: sessionId || undefined,
                 }),
             });
@@ -78,6 +79,10 @@ export default function Twin() {
             setMessages(prev => [...prev, errorMessage]);
         } finally {
             setIsLoading(false);
+            // Refocus the input after message is sent
+            setTimeout(() => {
+                inputRef.current?.focus();
+            }, 100);
         }
     };
 
@@ -88,15 +93,32 @@ export default function Twin() {
         }
     };
 
+    // Check if avatar exists
+    const [hasAvatar, setHasAvatar] = useState(false);
+    useEffect(() => {
+        // Check if avatar.jpg exists
+        fetch('/avatar.jpg', { method: 'HEAD' })
+            .then(res => setHasAvatar(res.ok))
+            .catch(() => setHasAvatar(false));
+    }, []);
+
     return (
         <div className="flex flex-col h-full bg-slate-950/80 backdrop-blur-xl border border-slate-800/80 rounded-2xl shadow-2xl shadow-slate-950/50 overflow-hidden">
             {/* Header */}
             <div className="relative bg-gradient-to-r from-slate-900 via-slate-950 to-slate-900 border-b border-slate-800/80 px-6 py-4 flex items-center justify-between">
                 <div className="flex items-center gap-3">
                     <div className="relative">
-                        <div className="w-10 h-10 bg-gradient-to-tr from-cyan-500 to-indigo-600 rounded-xl flex items-center justify-center shadow-lg shadow-indigo-500/10">
-                            <Bot className="w-6 h-6 text-white animate-pulse" />
-                        </div>
+                        {hasAvatar ? (
+                            <img 
+                                src="/avatar.jpg" 
+                                alt="Lukas Wölfl Avatar" 
+                                className="w-10 h-10 rounded-xl object-cover border border-slate-800"
+                            />
+                        ) : (
+                            <div className="w-10 h-10 bg-gradient-to-tr from-cyan-500 to-indigo-600 rounded-xl flex items-center justify-center shadow-lg shadow-indigo-500/10">
+                                <Bot className="w-6 h-6 text-white animate-pulse" />
+                            </div>
+                        )}
                         <span className="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-emerald-500 border-2 border-slate-950 rounded-full animate-pulse" />
                     </div>
                     <div>
@@ -120,9 +142,17 @@ export default function Twin() {
             <div className="flex-1 overflow-y-auto p-6 space-y-6 scrollbar-thin scrollbar-thumb-slate-800 scrollbar-track-transparent">
                 {messages.length === 0 && (
                     <div className="h-full flex flex-col items-center justify-center text-center max-w-md mx-auto my-auto py-12">
-                        <div className="w-16 h-16 bg-slate-900/80 border border-slate-800 rounded-2xl flex items-center justify-center mb-6 shadow-xl relative group">
+                        <div className="w-20 h-20 bg-slate-900/80 border border-slate-800 rounded-2xl flex items-center justify-center mb-6 shadow-xl relative group overflow-hidden">
                             <div className="absolute inset-0 bg-gradient-to-tr from-cyan-500/25 to-indigo-500/25 rounded-2xl blur-lg group-hover:opacity-100 transition-opacity opacity-50" />
-                            <Sparkles className="w-8 h-8 text-cyan-400 relative z-10" />
+                            {hasAvatar ? (
+                                <img 
+                                    src="/avatar.jpg" 
+                                    alt="Lukas Wölfl Avatar" 
+                                    className="w-full h-full object-cover relative z-10"
+                                />
+                            ) : (
+                                <Sparkles className="w-8 h-8 text-cyan-400 relative z-10 animate-pulse" />
+                            )}
                         </div>
                         <h3 className="text-lg font-semibold text-slate-200">Connect with Lukas&apos;s Twin</h3>
                         <p className="text-sm text-slate-400 mt-2 leading-relaxed">
@@ -155,9 +185,17 @@ export default function Twin() {
                     >
                         {message.role === 'assistant' && (
                             <div className="flex-shrink-0 self-end">
-                                <div className="w-8 h-8 bg-gradient-to-tr from-cyan-500/20 to-indigo-500/20 border border-cyan-500/30 rounded-lg flex items-center justify-center shadow-lg">
-                                    <Bot className="w-4.5 h-4.5 text-cyan-400" />
-                                </div>
+                                {hasAvatar ? (
+                                    <img 
+                                        src="/avatar.jpg" 
+                                        alt="Lukas Wölfl Avatar" 
+                                        className="w-8 h-8 rounded-lg object-cover border border-slate-800 shadow-md animate-fade-in"
+                                    />
+                                ) : (
+                                    <div className="w-8 h-8 bg-gradient-to-tr from-cyan-500/20 to-indigo-500/20 border border-cyan-500/30 rounded-lg flex items-center justify-center shadow-lg">
+                                        <Bot className="w-4.5 h-4.5 text-cyan-400" />
+                                    </div>
+                                )}
                             </div>
                         )}
 
@@ -189,9 +227,17 @@ export default function Twin() {
                 {isLoading && (
                     <div className="flex gap-4 justify-start animate-fade-in">
                         <div className="flex-shrink-0 self-end">
-                            <div className="w-8 h-8 bg-gradient-to-tr from-cyan-500/20 to-indigo-500/20 border border-cyan-500/30 rounded-lg flex items-center justify-center">
-                                <Bot className="w-4.5 h-4.5 text-cyan-400" />
-                            </div>
+                            {hasAvatar ? (
+                                <img 
+                                    src="/avatar.jpg" 
+                                    alt="Lukas Wölfl Avatar" 
+                                    className="w-8 h-8 rounded-lg object-cover border border-slate-800 shadow-md"
+                                />
+                            ) : (
+                                <div className="w-8 h-8 bg-gradient-to-tr from-cyan-500/20 to-indigo-500/20 border border-cyan-500/30 rounded-lg flex items-center justify-center">
+                                    <Bot className="w-4.5 h-4.5 text-cyan-400" />
+                                </div>
+                            )}
                         </div>
                         <div className="bg-slate-900/95 border border-slate-800/85 rounded-2xl rounded-bl-none px-4 py-3">
                             <div className="flex space-x-1.5 py-1">
@@ -210,6 +256,7 @@ export default function Twin() {
             <div className="border-t border-slate-800/80 p-4 bg-slate-900/20">
                 <div className="flex gap-3 items-center">
                     <input
+                        ref={inputRef}
                         type="text"
                         value={input}
                         onChange={(e) => setInput(e.target.value)}
@@ -217,11 +264,12 @@ export default function Twin() {
                         placeholder="Ask Lukas's digital twin something..."
                         className="flex-1 px-4 py-3 bg-slate-900/90 hover:bg-slate-900 border border-slate-800/90 focus:border-cyan-500/80 rounded-xl focus:outline-none focus:ring-1 focus:ring-cyan-500/50 text-slate-100 placeholder-slate-500 text-sm transition-all duration-200"
                         disabled={isLoading}
+                        autoFocus
                     />
                     <button
                         onClick={sendMessage}
                         disabled={!input.trim() || isLoading}
-                        className="p-3 bg-gradient-to-r from-cyan-500 to-indigo-600 hover:from-cyan-400 hover:to-indigo-500 text-white rounded-xl focus:outline-none focus:ring-2 focus:ring-cyan-500/35 disabled:opacity-40 disabled:cursor-not-allowed transition-all duration-200 shadow-lg shadow-indigo-650/10 flex items-center justify-center"
+                        className="p-3 bg-gradient-to-r from-cyan-500 to-indigo-650 hover:from-cyan-400 hover:to-indigo-500 text-white rounded-xl focus:outline-none focus:ring-2 focus:ring-cyan-500/35 disabled:opacity-40 disabled:cursor-not-allowed transition-all duration-200 shadow-lg shadow-indigo-650/10 flex items-center justify-center"
                     >
                         <Send className="w-4.5 h-4.5" />
                     </button>
