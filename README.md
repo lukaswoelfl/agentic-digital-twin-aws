@@ -63,7 +63,48 @@ AWS Lambda (FastAPI Backend with Mangum)
 - **Python** 3.12 or higher (managed with `uv` recommended)
 - **Terraform** 1.15 or higher
 - **Docker** (for packing Lambda backend dependencies)
-- **AWS CLI** installed and configured (`aws configure`)
+- **AWS CLI** installed and configured
+
+### AWS CLI & Credentials Setup
+
+Before running any deployment scripts or starting the local backend, you must configure your local machine to communicate with AWS.
+
+#### 1. Install AWS CLI
+On macOS, the easiest way to install the AWS CLI is via Homebrew:
+```bash
+brew install awscli
+```
+
+#### 2. Configure AWS Credentials
+Choose one of the following methods depending on your AWS account configuration:
+
+##### Method A: Modern SSO / IAM Identity Center (Recommended)
+This is the modern, secure way to connect without storing long-lived, permanent access keys on your local machine:
+```bash
+aws configure sso
+```
+The CLI will ask for your **SSO start URL** (retrieved from your AWS console) and **SSO region**. It will automatically open your browser to log in, and then generate short-lived credentials that rotate dynamically.
+
+##### Method B: Classic IAM Access Keys
+Use this method if you have generated permanent credentials (an access key and a secret access key) for an IAM User:
+1. Run the configuration wizard:
+   ```bash
+   aws configure
+   ```
+2. Fill in the fields when prompted:
+   - `AWS Access Key ID`: Your access key (typically starts with `AKIA...`)
+   - `AWS Secret Access Key`: Your secret access key
+   - `Default region name`: e.g., `eu-central-1` (Frankfurt) or your preferred region
+   - `Default output format`: `json`
+
+#### 3. Verify Authentication
+Ensure that your local environment is successfully authenticated with AWS by running the "Who am I?" command:
+```bash
+aws sts get-caller-identity
+```
+If you see your AWS account ID and IAM user/role ARN in JSON format, the credentials are set up correctly and you are ready to deploy.
+
+---
 
 ### Local Environment Setup
 
